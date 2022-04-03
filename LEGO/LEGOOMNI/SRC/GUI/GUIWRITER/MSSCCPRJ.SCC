@@ -1,0 +1,4 @@
+SCC = This is a Source Code Control file
+
+[writer.mak]
+SCC_Project_Name = "$/Lego/LegoOmni/Src/Gui/GuiWriter", SUBAAAAA

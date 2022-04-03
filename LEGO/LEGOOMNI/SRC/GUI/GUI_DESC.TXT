@@ -1,0 +1,305 @@
+ASCII Gui description file format
+
+Empty lines and lines starting with // are ignored.
+
+Actions are Gui Control user feedback operations such as a visual animation
+of a control pushbutton being pressed accompanied by a wav file of a click
+sound. Actions must be defined at the beginning of the file before the Gui
+definition.
+
+data type	allowable values
+---------	-----------------------------------------------------
+<string>	printable text string with no spaces or tabs.
+<bool>		one of the keywords TRUE or FALSE
+<int>		an integer number
+Note: the keyword NONE may be used to indicate an empty string or the
+absense of a numerical value when one does not apply.
+
+The following keywords and data type are included in Actions:
+
+DEFINE_ACTION	<string>	Identifies the action by name. Starts the action
+							definition.
+							REQUIRED ITEM
+LOOP			<bool>		If TRUE the action will repeat indefinately.
+							Default: FALSE
+FRAME_TIME		<int>		Frame time interval (msecs ?).
+							Default: NONE
+NUM_FRAMES		<int>		The number of frames in an animation.
+							Default: 1
+OFFSET			<int int>	X/Y offset for a single animation frame. There
+							must be one of these for each frame counted in
+							the NUM_FRAMES item.
+							REQUIRED ITEM
+BITMAP_FILE		<string>	Bitmap filename. There must be one of these
+							for each frame counted in the NUM_FRAMES item.
+							REQUIRED ITEM
+SOUND_ACTION	<string>	Sound action name. (Omni stream action name)
+							There can be at most one of these.
+							Default: NONE
+NAMED_ACTION	<string>	A named streamable action that exists in the
+							Omni data stream.
+							Default: NONE
+BITMAP_NO_BLT	<bool>		This flag indicates that any bitmaps are for
+							positional information only and are not to 
+							be drawn.
+							Default: FALSE
+CTRL_MESSAGE	<control name> <data type> <value>
+							Inter-control message. The <control name>
+							identifies the destination of the message.
+							The <data type> is one of: BOOL, INT, STRING, or
+							SYSTEM_VARIABLE.
+							These messages set the state or value of the target
+							control to the specified value.
+							The allowable values for BOOL are TRUE or FALSE.
+							The allowable values for INT are integral numbers
+							from -32768 to +32767.
+							Strings cannot have embedded white space.
+							If the <data type> is SYSTEM_VARIABLE, the value
+							is taken at run time from the named game system
+							variable.
+							Messages can also have the gui as the target. In
+							this case the data type must be STRING and the value
+							must be a recognized keyword from the following list:
+						*	EXIT - The gui should perform it's shutdown operation
+							and destroy itself.
+END_ACTION		<no data>	Indicates the end of an action definition. The
+							action items defined since the last DEFINE_ACTION
+							are used to create an action data structure for
+							use in the Gui definition that follows.
+
+
+Here are some examples of Action definitions:
+
+DEFINE_ACTION	action1
+LOOP			FALSE
+FRAME_TIME		NONE
+NUM_FRAMES		1
+OFFSET			0 0
+BITMAP_FILE		pic1.bmp
+SOUND_ACTION	sound1
+NAMED_ACTION	NONE
+END_ACTION
+
+DEFINE_ACTION	action2
+LOOP			TRUE
+FRAME_TIME		300
+NUM_FRAMES		5
+OFFSET			0 0
+OFFSET			3 0
+OFFSET			5 0
+OFFSET			3 0
+OFFSET			0 0
+BITMAP_FILE		picA.bmp
+BITMAP_FILE		picB.bmp
+BITMAP_FILE		picC.bmp
+BITMAP_FILE		picD.bmp
+BITMAP_FILE		picE.bmp
+SOUND_ACTION	NONE
+NAMED_ACTION	NONE
+END_ACTION
+
+DEFINE_ACTION	action3
+LOOP			FALSE
+FRAME_TIME		300
+NUM_FRAMES		1
+OFFSET			0 0
+BITMAP_FILE		NONE
+NAMED_ACTION	NONE
+END_ACTION
+
+
+
+
+A Gui object contains startup/shutdown animations, a list of controls, resource
+pools (bitmap/flc/wav/midi), and a background bitmap.
+The keywords are listed below:
+
+GUI_NAME		<string>	Identifies the Gui
+							REQUIRED ITEM
+CAMERA			<string>	Identifies the 3d camera (implies
+							position and orientation).
+							REQUIRED ITEM
+START_FONT		<no data>	Indicates the beginning of a list of font
+							definitions that constitute the font pool for this
+							Gui.
+							Default: No font definition
+NEW_FONT		<no data>	Indicates a new font definition is being added
+							to the font pool. This keyword is followed by
+							a list of character code and filename pairs that
+							identify the ascii character code and the
+							coresponding character bitmap. The character codes
+							may be single characters in quotes ('A'), decimal
+							numbers (65), or hex numbers (0x41).
+							REQUIRED ITEM (If defining a font)
+END_FONT		<no data>	Indicates the completion of the list of font
+							definitions.
+							REQUIRED ITEM  (If defining a font)
+STARTUP			<string>	Named streamable animation to play when the Gui
+							is activated.
+							Default: NONE
+SHUTDOWN		<string>	Named streamable animation to play when the Gui
+							ends.
+							Default: NONE
+CHAINACTION		<string>	Named streamable animation to chain to on gui
+							destruction.
+							Default: NONE
+BACKGROUND_BITMAP_FILE	<string>	Identifies which bitmap to use
+							as a Gui background.
+							REQUIRED ITEM
+
+
+The base Gui definition is followed by the list of controls. The controls are
+defined as follows:
+
+// generic control data
+CONTROL_NAME	<string>	Identifies the control. This may be used for
+							intercontrol messaging.
+							REQUIRED ITEM
+OBJECT_NAME		<string>	Identifies the 3d object that this control is
+							associated with.
+							REQUIRED ITEM
+EVENT_MASK		<string list>	Identifies which mouse events the control
+							wants to receive. May be one or more of:
+							BUTTON_DOWN BUTTON_UP DRAG NONE
+							Default: NONE
+KEYRANGE_LOW	<int>		Ascii keycode interest range lower limit.
+							Default: 0
+KEYRANGE_HIGH	<int>		Ascii keycode interest range upper limit.
+							Default: KEYRANGE_LOW
+SYSTEM_VARIABLE	<string>	Identifies a game system named variable or object
+							that supports Get/Set State/Value. The control
+							is aligned with this variable at creation time and
+							sets this variable on state changes.
+							Default: NONE
+TYPE			<string>	Identifies the type of control. May one of:
+							PUSHBUTTON TOGGLE RADIO SLIDER STRING ACTIONARRAY
+
+Control type specific data follows the generic control info:
+
+For PUSHBUTTON control:
+
+RELEASED_STATE	<string>	Identifies which of the previously defined Actions
+							should be used for the control's released or normal
+							state.
+							REQUIRED ITEM
+SELECT_ACTION	<string>	Identifies which of the previously defined Actions
+							should be used for the control's select transition.
+							REQUIRED ITEM
+SELECTED_STATE	<string>	Identifies which of the previously defined Actions
+							should be used for the control's selected state.
+							REQUIRED ITEM
+RELEASE_ACTION	<string>	Identifies which of the previously defined Actions
+							should be used for the control's release transition.
+							REQUIRED ITEM
+
+For TOGGLE control:
+
+INIT_STATE		<bool>		Initial state of the toggle control. If the control
+							has a SYSTEM_VARIABLE associated with it, then this
+							item will be overridden by the SYSTEM_VARIABLE.
+							REQUIRED ITEM
+RELEASED_STATE	<string>	Identifies which of the previously defined Actions
+							should be used for the control's released or normal
+							state.
+							REQUIRED ITEM
+SELECT_ACTION	<string>	Identifies which of the previously defined Actions
+							should be used for the control's select transition.
+							REQUIRED ITEM
+SELECTED_STATE	<string>	Identifies which of the previously defined Actions
+							should be used for the control's selected state.
+							REQUIRED ITEM
+RELEASE_ACTION	<string>	Identifies which of the previously defined Actions
+							should be used for the control's release transition.
+							REQUIRED ITEM
+
+
+For STRING control:
+
+MAXLENGTH		<int>		Maximum string length
+							REQUIRED ITEM
+FONTINDEX		<int>		Identifies a font from the font pool
+							REQUIRED ITEM
+
+							The following items define a background area for the
+							string control. The behavior is the same as for a
+							pushbutton control. The string characters will be
+							applied on top of the background using the
+							RELEASED_STATE action as a positioning reference.
+RELEASED_STATE	<string>	Identifies which of the previously defined Actions
+							should be used for the control's released or normal
+							state.
+							REQUIRED ITEM
+SELECT_ACTION	<string>	Identifies which of the previously defined Actions
+							should be used for the control's select transition.
+							REQUIRED ITEM
+SELECTED_STATE	<string>	Identifies which of the previously defined Actions
+							should be used for the control's selected state.
+							REQUIRED ITEM
+RELEASE_ACTION	<string>	Identifies which of the previously defined Actions
+							should be used for the control's release transition.
+							REQUIRED ITEM
+
+
+
+A Gui example follows:
+
+// test gui definition
+GUI_NAME		TestGui1
+CAMERA			Camera1
+START_FONT
+NEW_FONT
+'A' A.bmp
+'B' B.bmp
+'C' C.bmp
+'D' D.bmp
+NEW_FONT
+0x41 A2.bmp
+0x42 B2.bmp
+0x43 C2.bmp
+0x44 D2.bmp
+END_FONT
+STARTUP			SampleGuiStartup
+SHUTDOWN		SampleGuiShutdown
+BACKGROUND_BITMAP_FILE	back.bmp
+NUM_CONTROLS	2
+
+// control list
+
+
+// control 1
+// generic control data
+CONTROL_NAME	TestControl1
+OBJECT_NAME		ControlObject1
+EVENT_MASK		BUTTON_DOWN BUTTON_UP
+TYPE			PUSHBUTTON
+
+// pushbutton specific data
+RELEASED_STATE	action1		// initial state
+SELECT_ACTION	action2		// press transition
+SELECTED_STATE	action2		// selected state
+RELEASE_ACTION	action3		// release transition
+
+// control 2
+// generic control data
+CONTROL_NAME	TestControl2
+OBJECT_NAME		ControlObject2
+EVENT_MASK		BUTTON_DOWN
+TYPE			PUSHBUTTON
+
+// pushbutton specific data
+RELEASED_STATE	action2		// initial state
+SELECT_ACTION	action3		// press transition
+SELECTED_STATE	action3		// selected state
+RELEASE_ACTION	action1		// release transition
+
+// control 3
+// generic control data
+CONTROL_NAME	TestControl3
+OBJECT_NAME		ControlObject3
+EVENT_MASK		NONE
+TYPE			STRING
+
+// string specific data
+MAXLENGTH		10
+FONTINDEX		0			// use first font definition
+

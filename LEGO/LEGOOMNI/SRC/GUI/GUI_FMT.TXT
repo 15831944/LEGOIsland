@@ -1,0 +1,230 @@
+
+Gui file format:
+
+<gui_def>:	Gui location is implied by the 3d world object that
+			it is aligned with at creation time. The Gui object
+			will request the following data stream when activated.
+			The Gui object will have a hard coded understanding
+			of the game world objects and/or actions that the
+			controls are manipulating. Resource pools (bitmap, flc,
+			midi, and wav) are accessible by all controls. Resource
+			elements are identified by indexes into the pools.
+---------------------------------------------------------------------
+len			<MxU32>			Length of following gui data.
+gname		<cstring>		Gui name.
+cname		<cstring>		Camera name (must correspond to 3d camera object).
+bmpool		<bitmap_pool>	Bitmap data that is available to all controls
+							in this Gui.
+soundpool	<sound_pool>	Sound action names that are available to all
+							controls in this Gui.
+actionpool	<action_pool>	Named Omni actions that are available to all
+							controls in this Gui.
+fontpool	<font_pool>		Font data that is available to all controls in
+							this Gui.
+startup		<cstring>		Gui startup animation name.
+shutdown	<cstring>		Gui shutdown animation name.
+chainAction	<cstring>		Gui chainto action name.
+background	<MxS16>			Background bitmap index
+numcontrols	<MxU8>			Number of controls (n)
+controls	<control_def[n]>	List of (n) variable length control object
+								data blocks.
+---------------------------------------------------------------------
+
+
+
+
+<control_def>:	All controls return 32 bit data as a parameter
+				to the gui callback function in addition to their
+				ID. All controls have GetState and SetState member
+				functions that give the Gui object access and
+				control over control states.
+---------------------------------------------------------------------
+len			<MxU32>		Length of following data.
+ctrlname	<cstring>	Gui control name.
+objname		<cstring>	3d object to attach to.
+emask		<MxU8>		Event Mask (identifies events that the control
+						wants to recieve).
+keylow		<MxU8>		Keycode interest range lower limit.
+keyhigh		<MxU8>		Keycode interest range upper limit.
+sysvar		<cstring>	Names the system variable to associate with this
+						control.
+type		<MxU8>		Type (PUSHBUTTON, TOGGLE, RADIO, SLIDER, STRING).
+data		<type_dependant_data>	
+---------------------------------------------------------------------
+
+<type_dependant_data>:
+
+
+(PUSHBUTTON):	may animate for press/release. Single activate callback.
+---------------------------------------------------------------------
+nstate	<action_def>	normal state.
+strans	<action_def>	select transition.
+sstate	<action_def>	selected state.
+rtrans	<action_def>	release transition.
+---------------------------------------------------------------------
+
+(TOGGLE):	may animate for press/release. Single callback on state
+			change. Callbak parameter is current state.
+			If is RADIO is true then only allows event to toggle
+			on, toggle off would then be controlled programmatically.
+---------------------------------------------------------------------
+radio	<MxBool>		TRUE = toggle is part of radio control.
+init	<MxBool>		Initial state of the control.
+nstate	<action_def>	normal state.
+strans	<action_def>	select transition.
+sstate	<action_def>	selected state.
+rtrans	<action_def>	release transition.
+---------------------------------------------------------------------
+
+(RADIO):	A collection of TOGGLE's. Manages TOGGLE's to allow only one
+			to be selected at a time. Parameter returned on callback ranges
+			from 0 to n-1 where n is the number of TOGGLE's in collection.
+---------------------------------------------------------------------
+num		<MxU8>			Number of TOGGLE's
+init	<MxU8>			Initial value of the control.
+toggles	<TOGGLE[num]>	List of toggle type_dependant_data blocks.
+---------------------------------------------------------------------
+
+(SLIDER):	Allows incremental adjustment of a value between min & max.
+			Granularity depends on number of frames (255 max) mapped
+			into min to max range. Single callback on release action.
+			Callback parameter is new value.
+---------------------------------------------------------------------
+min			<MxS32>				Minimum value.
+max			<MxS32>				Maximum value.
+init		<MxS32>				Initial value of the control.
+animdata	<random_access_def>	Animation and steady state data.
+---------------------------------------------------------------------
+
+(STRING):	String control will render text onto Gui supplied bitmap.
+			Font definition includes character bitmaps, scale factor,
+			and character spacing information. This is an output only
+			control and does not make a callback to Gui. The Gui can
+			combine pushbuttons and string output controls to create
+			a string editing control (Registration Book).
+---------------------------------------------------------------------
+max		<MxU8>			Maximum length of string.
+fontidx	<MxU8>			Index into font pool.
+nstate	<action_def>	Background normal state.
+strans	<action_def>	Background select transition.
+sstate	<action_def>	Background selected state.
+rtrans	<action_def>	Background release transition.
+---------------------------------------------------------------------
+
+<ctrl_msg>:
+---------------------------------------------------------------------
+target		<cstring>				Target of message
+type		<MxU8>					Data type [	0=bool,
+												1=int,
+												2=string,
+												3=system variable ]
+value		[<MxBool> or <MxS32> or <cstring>]
+
+
+<action_def>:
+---------------------------------------------------------------------
+looping		<MxBool>				TRUE if action is looping.
+time		<MxTime>				Frame interval.
+numframes	<MxU8>					Number of frames.
+offsets		<xy_pair[numframes]>	Offset for each frame. 
+bmindexes	<MxS16[numframes]>		Bitmap pool indexes or flc indexes.
+sndindex	<MxS16>					Sound pool index.
+actionindex	<MxS16>					Self contained streamable action
+									to activate.
+bitmapnoblt	<MxBool>				Bitmaps are for positional info only,
+									they are not to be blt'd.
+nummesg		<MxU8>					Number of inter-control messages for
+									this action.
+messages	<ctrl_msg[nummesg]>		Control message list.
+---------------------------------------------------------------------
+
+<random_access_def>:
+---------------------------------------------------------------------
+horiz		<MxBool>		Horizontal = TRUE, vertical = FALSE. Specifies
+							how to interpret mouse movement over the control’s
+							extent.  
+extent		<rect>			Extent of control used along with mouse position
+							in determining control’s value and frame.
+numf		<MxU8>			Number of frames
+offsets		<xy_pair[numf]>	Offset for each frame
+bmindexes	<MxS16[numf]>	Bitmap pool index for each frame.
+pickareas	<rect_area_def[numf]>	Corresponding pick areas.
+actionindex	<MxS16>					Self contained streamable action
+									to activate.
+---------------------------------------------------------------------
+
+<rect_area_def>:
+---------------------------------------------------------------------
+num			<MxU8>			Number of rects in list
+rects		<rect[num]>		List of rects.
+---------------------------------------------------------------------
+
+<rect>:
+---------------------------------------------------------------------
+x1			<MxS16>		Lowest x value of rect.
+y1			<MxS16>		Lowest y value of rect.
+x2			<MxS16>		Highest x value of rect.
+y2			<MxS16>		Highest y value of rect.
+---------------------------------------------------------------------
+
+<xy_pair>:
+---------------------------------------------------------------------
+x			<MxS16>		x
+y			<MxS16>		y
+---------------------------------------------------------------------
+
+
+
+<bitmap_pool>:
+---------------------------------------------------------------------
+len		<MxU32>				Length of following data
+num		<MxS16>				Number of bitmap’s.
+bitmaps	<bitmap_def[num]>	List of embedded bitmap files.
+---------------------------------------------------------------------
+
+<sound_pool>:
+---------------------------------------------------------------------
+len		<MxU32>				Length of following data.
+num		<MxS16>				Number of sound names.
+sounds	<string[num]>		List of sound action names.
+---------------------------------------------------------------------
+
+<font_pool>:
+---------------------------------------------------------------------
+len		<MxU32>				Length of following data.
+num		<MxS16>				Number of font's.
+fonts	<font_def[num]>		List of embedded font maps.
+---------------------------------------------------------------------
+
+
+<bitmap_def>:
+---------------------------------------------------------------------
+len		<MxU32>				Length of following data.
+bitmap	<bitmap file>		Embedded file.
+---------------------------------------------------------------------
+
+<font_def>:
+---------------------------------------------------------------------
+len		<MxU32>				Length of following data.
+fontmap	<font_map>
+---------------------------------------------------------------------
+
+<font_map>:
+---------------------------------------------------------------------
+num		<MxU8>				number of entries
+[
+ code	<MxU8>				ascii character code
+ index	<MxS16>				bitmap index
+] x num						repeated num times
+---------------------------------------------------------------------
+
+
+
+NOTES:
+
+* All Gui Control managed data must be resident. Streamable actions
+can be used, but give us limited interactive capability (none?).
+
+* x/y screen coordinates assume an upper left origin.
+	
+

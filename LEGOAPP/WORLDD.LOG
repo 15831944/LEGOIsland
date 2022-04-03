@@ -1,0 +1,172 @@
+* Parsing D:\Lego\Media\Model2\Worldd.ss
+Opened file: data.pth
+Created Object: TestPaths
+Opened file: terrain.mod
+Created Object: TerrainModel
+Opened file: Palette.bmp
+Created Object: Palette
+Created Object: Terrain
+Opened file: paltest.mod
+Created Object: BoxModel
+Opened file: post.mod
+Created Object: PostModel
+Opened file: gas.mod
+Created Object: GasModel
+Opened file: Infoman.mod
+Created Object: InfoModel1
+Opened file: Infoman.mod
+Created Object: InfoModel2
+Opened file: Infoman.mod
+Created Object: InfoModel3
+Created Object: Box
+Created Object: Gas1
+Created Object: Gas2
+Created Object: Gas3
+Created Object: Gas4
+Created Object: Post1
+Created Object: Post2
+Created Object: Post3
+Created Object: Post4
+Created Object: Post5
+Created Object: Info1
+Created Object: Info2
+Created Object: Info3
+Bad (undefined) symbol InfoModel
+Created Object: TestActor1
+Created Object: TownWorld
+Created Object: StartUp
+* Weaving D:\Lego\Media\Model2\Worldd.ss
+buffer 0
+buffer 0
+weaving object: StartUp (stream:0)
+weaving object: TownWorld (stream:1)
+weaving object: Terrain (stream:2)
+weaving object: TerrainModel (stream:3)
+weaving object: Gas1 (stream:4)
+weaving object: GasModel (stream:5)
+weaving object: Gas2 (stream:6)
+weaving object: GasModel (stream:7)
+weaving object: Gas3 (stream:8)
+weaving object: GasModel (stream:9)
+weaving object: Gas4 (stream:10)
+weaving object: GasModel (stream:11)
+(:stream:3, time:-1, size:63570) 
+buffer 1
+(:stream:3, time:-1, size:65514) 
+buffer 2
+(:stream:3, time:-1, size:39136) 
+(:stream:3, time:0, size:0)  - end of stream
+(:stream:2, time:-2147483648, size:0)  - end of stream
+(:stream:5, time:-1, size:26312) 
+buffer 3
+(:stream:5, time:-1, size:65514) 
+buffer 4
+(:stream:5, time:-1, size:65514) 
+buffer 5
+(:stream:5, time:-1, size:65514) 
+buffer 6
+(:stream:5, time:-1, size:65514) 
+buffer 7
+(:stream:5, time:-1, size:65514) 
+buffer 8
+(:stream:5, time:-1, size:65514) 
+buffer 9
+(:stream:5, time:-1, size:65514) 
+buffer 10
+(:stream:5, time:-1, size:65514) 
+buffer 11
+(:stream:5, time:-1, size:65514) 
+buffer 12
+(:stream:5, time:-1, size:65514) 
+buffer 13
+(:stream:5, time:-1, size:65514) 
+buffer 14
+(:stream:5, time:-1, size:59858) 
+(:stream:5, time:0, size:0)  - end of stream
+(:stream:4, time:-2147483648, size:0)  - end of stream
+buffer 15
+(:stream:7, time:-1, size:65514) 
+buffer 16
+(:stream:7, time:-1, size:65514) 
+buffer 17
+(:stream:7, time:-1, size:65514) 
+buffer 18
+(:stream:7, time:-1, size:65514) 
+buffer 19
+(:stream:7, time:-1, size:65514) 
+buffer 20
+(:stream:7, time:-1, size:65514) 
+buffer 21
+(:stream:7, time:-1, size:65514) 
+buffer 22
+(:stream:7, time:-1, size:65514) 
+buffer 23
+(:stream:7, time:-1, size:65514) 
+buffer 24
+(:stream:7, time:-1, size:65514) 
+buffer 25
+(:stream:7, time:-1, size:65514) 
+buffer 26
+(:stream:7, time:-1, size:65514) 
+buffer 27
+(:stream:7, time:-1, size:20656) 
+(:stream:7, time:-2147483648, size:0)  - end of stream
+(:stream:6, time:-2147483648, size:0)  - end of stream
+(:stream:9, time:-1, size:44792) 
+buffer 28
+(:stream:9, time:-1, size:65514) 
+buffer 29
+(:stream:9, time:-1, size:65514) 
+buffer 30
+(:stream:9, time:-1, size:65514) 
+buffer 31
+(:stream:9, time:-1, size:65514) 
+buffer 32
+(:stream:9, time:-1, size:65514) 
+buffer 33
+(:stream:9, time:-1, size:65514) 
+buffer 34
+(:stream:9, time:-1, size:65514) 
+buffer 35
+(:stream:9, time:-1, size:65514) 
+buffer 36
+(:stream:9, time:-1, size:65514) 
+buffer 37
+(:stream:9, time:-1, size:65514) 
+buffer 38
+(:stream:9, time:-1, size:65514) 
+buffer 39
+(:stream:9, time:-1, size:41378) 
+(:stream:9, time:0, size:0)  - end of stream
+(:stream:8, time:-2147483648, size:0)  - end of stream
+(:stream:11, time:-1, size:24070) 
+buffer 40
+(:stream:11, time:-1, size:65514) 
+buffer 41
+(:stream:11, time:-1, size:65514) 
+buffer 42
+(:stream:11, time:-1, size:65514) 
+buffer 43
+(:stream:11, time:-1, size:65514) 
+buffer 44
+(:stream:11, time:-1, size:65514) 
+buffer 45
+(:stream:11, time:-1, size:65514) 
+buffer 46
+(:stream:11, time:-1, size:65514) 
+buffer 47
+(:stream:11, time:-1, size:65514) 
+buffer 48
+(:stream:11, time:-1, size:65514) 
+buffer 49
+(:stream:11, time:-1, size:65514) 
+buffer 50
+(:stream:11, time:-1, size:65514) 
+buffer 51
+(:stream:11, time:-1, size:62100) 
+(:stream:11, time:-2147483648, size:0)  - end of stream
+(:stream:10, time:-2147483648, size:0)  - end of stream
+(:stream:1, time:-2147483648, size:0)  - end of stream
+(:stream:0, time:-2147483648, size:0)  - end of stream
+buffer 52
+buffer 53

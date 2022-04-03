@@ -1,0 +1,10 @@
+SCC = This is a Source Code Control file
+
+[Build All Lego Projects.mak]
+SCC_Project_Name = "$/Lego/Master", PXBAAAAA
+
+[Master.mak]
+SCC_Project_Name = "$/Lego/Master", QXBAAAAA
+
+[LegoMaster.mak]
+SCC_Project_Name = "$/Lego/Master", EECAAAAA

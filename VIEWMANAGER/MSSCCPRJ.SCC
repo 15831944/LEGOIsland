@@ -1,0 +1,4 @@
+SCC = This is a Source Code Control file
+
+[ViewManager.mak]
+SCC_Project_Name = "$/ViewManager", PVBAAAAA

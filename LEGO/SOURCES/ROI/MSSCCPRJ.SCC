@@ -1,0 +1,4 @@
+SCC = This is a Source Code Control file
+
+[roi.mak]
+SCC_Project_Name = "$/Lego/Sources/Roi", FABAAAAA

@@ -1,0 +1,4 @@
+SCC = This is a Source Code Control file
+
+[GuiDemo.mak]
+SCC_Project_Name = "$/Lego/LegoOmni/Samples/GuiDemo", CVBAAAAA

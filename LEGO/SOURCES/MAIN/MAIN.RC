@@ -1,0 +1,597 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Dummy"
+    BEGIN
+        POPUP "&File"
+        BEGIN
+            POPUP "Open &Interleaf File"
+            BEGIN
+                MENUITEM "On &Disk...",                 ID_FILE_OPENINTERLEAFFILE_ONDISK
+
+                MENUITEM "In &RAM...",                  ID_FILE_OPENINTERLEAFFILE_INRAM
+
+            END
+            MENUITEM "Open &Palette File...",       ID_FILE_OPENPALETTEFILE
+        END
+        POPUP "&Commands"
+        BEGIN
+            MENUITEM "G&et Variable...",            ID_COMMANDS_GETVARIABLE
+            MENUITEM "Se&t Variable...",            ID_COMMANDS_SETVARIABLE
+            MENUITEM "Set &Sound Volume...",        ID_COMMANDS_SETSOUNDVOLUME
+
+            MENUITEM "Set &Music Volume...",        ID_COMMANDS_SETMUSICVOLUME
+
+        END
+        POPUP "&Options"
+        BEGIN
+            MENUITEM "&Tickle...",                  ID_OPTIONS_TICKLE
+            MENUITEM "Realtime View &Weights...",   ID_OPTIONS_REALTIMEVIEWWEIGHTS
+
+            MENUITEM "&Realism...",                 ID_OPTIONS_REALISM
+            MENUITEM "Navigation",                  ID_OPTIONS_NAVIGATION
+        END
+        MENUITEM "&Video...",                   ID_VIDEO
+        MENUITEM "&Actions...",                 ID_ACTIONS
+        MENUITEM "&Start",                      ID_START, GRAYED
+        MENUITEM "S&top",                       ID_STOP, GRAYED
+        MENUITEM "E&xit",                       ID_EXIT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_GOTO DIALOG DISCARDABLE  0, 0, 234, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Go To"
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_ACTION_NAME,8,18,144,65,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,178,6,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,178,23,50,14
+    LTEXT           "Action:",IDC_STATIC,8,6,41,8
+END
+
+IDD_GETVARIABLE DIALOG DISCARDABLE  0, 0, 186, 47
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Get Variable"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_NAME,8,16,94,13,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,130,6,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,130,23,50,14
+    LTEXT           "Name:",IDC_STATIC,8,6,30,8
+END
+
+IDD_SETVARIABLE DIALOG DISCARDABLE  0, 0, 186, 66
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Set Variable"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_NAME,8,16,94,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_VALUE,8,44,94,13,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,130,6,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,130,23,50,14
+    LTEXT           "Name:",IDC_STATIC,8,6,30,8
+    LTEXT           "Value:",IDC_STATIC,8,34,30,8
+END
+
+IDD_SETSOUNDVOLUME DIALOG DISCARDABLE  0, 0, 186, 47
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Set Sound Volume"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_SOUNDVOLUME,8,16,94,13,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,130,6,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,130,23,50,14
+    LTEXT           "Volume:",IDC_STATIC,8,6,30,8
+END
+
+IDD_SETMUSICVOLUME DIALOG DISCARDABLE  0, 0, 186, 47
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Set Music Volume"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_MUSICVOLUME,8,16,94,13,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,130,6,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,130,23,50,14
+    LTEXT           "Volume:",IDC_STATIC,8,6,30,8
+END
+
+IDD_TICKLE_INTERVALS DIALOG DISCARDABLE  0, 0, 187, 95
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Tickle Intervals"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,130,5,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,130,75,50,14
+    LTEXT           "TickleManager",IDC_STATIC,5,5,50,10
+    EDITTEXT        IDC_TICKLEMAN,60,5,45,10,ES_AUTOHSCROLL
+    LTEXT           "Video",IDC_STATIC,5,20,50,10
+    EDITTEXT        IDC_VIDEOMAN,60,20,45,10,ES_AUTOHSCROLL
+    LTEXT           "Notification",IDC_STATIC,5,35,50,10
+    EDITTEXT        IDC_NOTIFYMAN,60,35,45,10,ES_AUTOHSCROLL
+    LTEXT           "Sound",IDC_STATIC,5,50,50,10
+    EDITTEXT        IDC_SOUNDMAN,60,50,45,10,ES_AUTOHSCROLL
+    LTEXT           "Music",IDC_STATIC,5,65,50,10
+    EDITTEXT        IDC_MUSICMAN,60,65,45,10,ES_AUTOHSCROLL
+    LTEXT           "Event",IDC_STATIC,5,80,50,10
+    EDITTEXT        IDC_EVENTMAN,60,80,45,10,ES_AUTOHSCROLL
+    PUSHBUTTON      "Read",IDC_READ_TICKLES,130,40,50,14
+END
+
+IDD_REALISM DIALOGEX 0, 0, 237, 140
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "+"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Generic6",IDC_REALISM,"msctls_trackbar32",TBS_AUTOTICKS | 
+                    TBS_TOP | WS_TABSTOP,5,11,226,19
+    LTEXT           "High Speed",IDC_STATIC,5,3,42,8
+    LTEXT           "1000 ms",IDC_STATIC_RENDERTIME_CURRENT,136,66,28,8
+    LTEXT           "1000 ms",IDC_STATIC_FRAMETIME_MIN,51,46,28,8
+    LTEXT           "Min",IDC_STATIC,7,46,33,8
+    LTEXT           "1000 ms",IDC_STATIC_FRAMETIME_MAX,51,56,28,8
+    LTEXT           "Max",IDC_STATIC,7,56,33,8
+    LTEXT           "1000 ms",IDC_STATIC_FRAMETIME_AVERAGE,51,66,28,8
+    LTEXT           "Average",IDC_STATIC,7,66,33,8
+    LTEXT           "Events profiling",IDC_STATIC,7,88,50,8
+    LTEXT           "Event:",IDC_STATIC,7,103,25,8
+    LTEXT           "Quantity:",IDC_STATIC,92,103,28,8
+    LTEXT           "Time:",IDC_STATIC,122,103,20,8
+    LTEXT           "Time/Event:",IDC_STATIC,149,103,40,8
+    LTEXT           "Time/Frame:",IDC_STATIC,194,103,40,8
+    LTEXT           "c_notificationButtonDown",IDC_STATIC,7,118,75,8
+    LTEXT           "c_notificationMouseMove",IDC_STATIC,7,128,80,8
+    LTEXT           "0",IDC_STATIC_MOUSE_MOVE,92,128,25,8
+    LTEXT           "0",IDC_STATIC_BUTTON_DOWN,92,118,25,8
+    LTEXT           "0 ms",IDC_STATIC_BUTTON_DOWN_TIME,122,118,25,8
+    LTEXT           "0 ms",IDC_STATIC_BUTTON_DOWN_AVR_TIME,152,118,35,8
+    LTEXT           "0 ms",IDC_STATIC_BUTTON_DOWN_FRAME_TIME,197,118,25,8
+    LTEXT           "0 ms",IDC_STATIC_MOUSE_MOVE_TIME,122,128,25,8
+    LTEXT           "0 ms",IDC_STATIC_MOUSE_MOVE_AVR_TIME,152,128,35,8
+    LTEXT           "0 ms",IDC_STATIC_MOUSE_MOVE_FRAME_TIME,197,128,25,8
+    LTEXT           "Frame: Time        Rate",IDC_STATIC,42,34,74,8
+    LTEXT           "3D Render",IDC_STATIC,134,34,38,8
+    LTEXT           "High Detail",IDC_STATIC,195,2,36,11
+    LTEXT           "  0.0 fps",IDC_STATIC_FRAMERATE_MIN,87,46,28,8
+    LTEXT           "  0.0 fps",IDC_STATIC_FRAMERATE_MAX,87,56,28,8
+    LTEXT           "  0.0 fps",IDC_STATIC_FRAMERATE_AVERAGE,87,66,28,8
+    LTEXT           "1000 ms",IDC_STATIC_RENDERTIME,136,76,28,8
+    LTEXT           "1000 ms",IDC_STATIC_FRAMETIME_REQUESTED,51,76,28,8
+    LTEXT           "Requested",IDC_STATIC,7,76,38,8
+    LTEXT           "  0.0 fps",IDC_STATIC_FRAMERATE_REQUESTED,87,76,28,8
+END
+
+IDD_REALTIMEVIEW_WEIGHTS DIALOG DISCARDABLE  0, 0, 236, 113
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Realtime View Weights"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "Size",IDC_STATIC,16,7,18,8
+    CONTROL         "Generic6",IDC_WEIGHT_SIZE,"msctls_trackbar32",
+                    TBS_AUTOTICKS | TBS_VERT | TBS_BOTH | WS_TABSTOP,11,15,
+                    28,66
+    LTEXT           "0.0000",IDC_STATIC_WEIGHT_SIZE,14,80,23,8
+    CTEXT           "Accuracy",IDC_STATIC,44,7,37,8
+    CONTROL         "Generic6",IDC_WEIGHT_ACCURACY,"msctls_trackbar32",
+                    TBS_AUTOTICKS | TBS_VERT | TBS_BOTH | WS_TABSTOP,48,15,
+                    28,66
+    LTEXT           "0.0000",IDC_STATIC_WEIGHT_ACCURACY,51,80,23,8
+    CTEXT           "Semantic",IDC_STATIC,81,7,36,8
+    CONTROL         "Generic6",IDC_WEIGHT_SEMANTIC,"msctls_trackbar32",
+                    TBS_AUTOTICKS | TBS_VERT | TBS_BOTH | WS_TABSTOP,85,15,
+                    28,66
+    LTEXT           "0.0000",IDC_STATIC_WEIGHT_SEMANTIC,88,80,23,8
+    CTEXT           "Focus",IDC_STATIC,123,7,26,8
+    CONTROL         "Generic6",IDC_WEIGHT_FOCUS,"msctls_trackbar32",
+                    TBS_AUTOTICKS | TBS_VERT | TBS_BOTH | WS_TABSTOP,122,15,
+                    28,66
+    LTEXT           "0.0000",IDC_STATIC_WEIGHT_FOCUS,125,80,23,8
+    CTEXT           "Motion",IDC_STATIC,159,7,28,8
+    CONTROL         "Generic6",IDC_WEIGHT_MOTION,"msctls_trackbar32",
+                    TBS_AUTOTICKS | TBS_VERT | TBS_BOTH | WS_TABSTOP,159,15,
+                    29,66
+    LTEXT           "0.0000",IDC_STATIC_WEIGHT_MOTION,162,80,23,8
+    CTEXT           "Hysteresis",IDC_STATIC,192,7,37,8
+    CONTROL         "Generic6",IDC_WEIGHT_HYSTERESIS,"msctls_trackbar32",
+                    TBS_AUTOTICKS | TBS_VERT | TBS_BOTH | WS_TABSTOP,200,15,
+                    29,66
+    LTEXT           "0.0000",IDC_STATIC_WEIGHT_HYSTERESIS,203,80,23,8
+    LTEXT           "Sensitivity:",IDC_STATIC,16,94,34,8
+    LTEXT           "1/10000",IDC_SENSITIVITY_TEXT,51,94,28,8
+    CONTROL         "Spin3",IDC_SENSITIVITY,"msctls_updown32",UDS_ALIGNRIGHT | 
+                    UDS_ARROWKEYS | WS_TABSTOP,80,91,8,15
+    PUSHBUTTON      "&Set From Registry",IDC_BUTTON1,157,91,61,14
+END
+
+IDD_ACTIONS DIALOG DISCARDABLE  0, 0, 345, 127
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Actions"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,288,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,288,24,50,14
+    CONTROL         "List1",IDC_START,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,126,17,149,99
+    LTEXT           "Sources:",IDC_STATIC,7,7,57,8
+    COMBOBOX        IDC_SOURCES,7,17,105,68,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_ACTIONS,7,48,105,68,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Actions:",IDC_STATIC,7,37,47,8
+    LTEXT           "Start List:",IDC_STATIC,126,7,65,8
+    PUSHBUTTON      "Add",IDC_ADD,288,41,50,14
+    PUSHBUTTON      "Delete",IDC_DELETE,288,58,50,14
+    PUSHBUTTON      "Properties",IDC_PROPERTIES,288,75,50,14
+END
+
+IDD_VIDEO DIALOG DISCARDABLE  0, 0, 191, 95
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Video"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "320x240",IDC_320x240,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,12,18,43,10
+    CONTROL         "640x480",IDC_640x480,"Button",BS_AUTORADIOBUTTON,12,31,
+                    43,10
+    CONTROL         "1",IDC_1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,71,18,
+                    20,10
+    CONTROL         "2",IDC_2,"Button",BS_AUTORADIOBUTTON,71,31,20,10
+    CONTROL         "Full Screen",IDC_FULLSCREEN,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,55,120,10
+    CONTROL         "Flip Surfaces",IDC_FLIPSURFACES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,67,120,10
+    CONTROL         "Back Buffers In Video Memory",
+                    IDC_BACKBUFFERSINVIDEOMEMORY,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,79,120,10
+    DEFPUSHBUTTON   "OK",IDOK,134,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,134,24,50,14
+    GROUPBOX        "Dimensions",IDC_STATIC,7,7,51,40
+    GROUPBOX        "Back Buffers",IDC_STATIC,67,7,53,40
+END
+
+IDD_NAVIGATION DIALOG DISCARDABLE  0, 0, 174, 173
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Navigation"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Close",IDCANCEL,118,154,50,14
+    CONTROL         "Slider1",IDC_SLIDERLV,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | WS_TABSTOP,34,6,88,11
+    LTEXT           "LinVel",IDC_STATIC,4,6,24,11
+    EDITTEXT        IDC_LINVEL,128,5,39,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER
+    CONTROL         "Slider1",IDC_SLIDERRV,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | WS_TABSTOP,34,21,88,11
+    LTEXT           "RotVel",IDC_STATIC,4,21,24,11
+    EDITTEXT        IDC_ROTVEL,128,20,39,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER
+    CONTROL         "Slider1",IDC_SLIDERLA,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | WS_TABSTOP,34,36,88,11
+    LTEXT           "LAccel",IDC_STATIC,4,36,24,11
+    EDITTEXT        IDC_LINACCEL,128,35,39,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER
+    CONTROL         "Slider1",IDC_SLIDERRA,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | WS_TABSTOP,34,50,88,11
+    LTEXT           "RAccel",IDC_STATIC,4,50,24,11
+    EDITTEXT        IDC_ROTACCEL,128,49,39,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER
+    CONTROL         "Slider1",IDC_SLIDERDZ,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | WS_TABSTOP,34,123,88,11
+    LTEXT           "DeadZ",IDC_STATIC,4,123,24,11
+    EDITTEXT        IDC_DZ,128,122,39,12,ES_AUTOHSCROLL | ES_READONLY | NOT 
+                    WS_BORDER
+    CONTROL         "Slider1",IDC_SLIDERRS,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | WS_TABSTOP,34,138,88,11
+    LTEXT           "RSens",IDC_STATIC,4,138,24,11
+    EDITTEXT        IDC_ROTSENS,128,137,39,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER
+    CONTROL         "Use RotVel",IDC_USEROTVEL,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,4,154,55,14
+    CONTROL         "Slider1",IDC_SLIDERLD,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | WS_TABSTOP,34,93,88,11
+    LTEXT           "LDeccel",IDC_STATIC,4,93,27,11
+    EDITTEXT        IDC_LINDECCEL,128,92,39,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER
+    CONTROL         "Slider1",IDC_SLIDERRD,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | WS_TABSTOP,34,107,88,11
+    LTEXT           "RDeccel",IDC_STATIC,4,107,27,11
+    EDITTEXT        IDC_ROTDECCEL,128,106,39,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER
+    CONTROL         "Slider1",IDC_SLIDERLAMIN,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | WS_TABSTOP,34,64,88,11
+    LTEXT           "LAcMin",IDC_STATIC,4,64,24,11
+    EDITTEXT        IDC_LINACCELMIN,128,63,39,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER
+    CONTROL         "Slider1",IDC_SLIDERRAMIN,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | WS_TABSTOP,34,78,88,11
+    LTEXT           "RAcMin",IDC_STATIC,4,78,24,11
+    EDITTEXT        IDC_ROTACCELMIN,128,77,39,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER
+END
+
+IDD_ACTION_PROPERTIES_GENERAL DIALOG DISCARDABLE  0, 0, 187, 77
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "General"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_PRELOAD_TIME,85,10,60,10,ES_AUTOHSCROLL | 
+                    WS_DISABLED
+    LTEXT           "ms",IDC_STATIC,150,10,20,10
+    CONTROL         "Preload resident",IDC_PRELOAD_RESIDENT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,5,10,75,10
+END
+
+IDD_ACTION_PROPERTIES_TIME DIALOG DISCARDABLE  0, 0, 209, 77
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Time"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_START_TIME,85,10,65,10,ES_AUTOHSCROLL
+    EDITTEXT        IDC_LOOPING_TIMES,85,35,65,10,ES_AUTOHSCROLL | 
+                    WS_DISABLED
+    LTEXT           "times",IDC_LOOPING_TIMES_TXT,155,35,20,10
+    GROUPBOX        "Duration",IDC_STATIC,5,25,200,40
+    CONTROL         "Looping",IDC_LOOPING,"Button",BS_AUTORADIOBUTTON,15,35,
+                    50,10
+    EDITTEXT        IDC_DURATION_VALUE,85,50,65,10,ES_AUTOHSCROLL
+    CONTROL         "Duration",IDC_DURATION,"Button",BS_AUTORADIOBUTTON,15,
+                    50,35,10
+    LTEXT           "ms",IDC_STATIC,155,50,20,10
+    LTEXT           "ms",IDC_STATIC,155,10,20,10
+    LTEXT           "Start time",IDC_STATIC,10,10,65,10
+END
+
+IDD_ACTION_PROPERTIES_LOCATION DIALOG DISCARDABLE  0, 0, 204, 77
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Location"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Location:",IDC_STATIC,5,5,30,10
+    LTEXT           "X:",IDC_STATIC,40,5,8,8
+    LTEXT           "Y:",IDC_STATIC,90,5,8,8
+    LTEXT           "Z:",IDC_STATIC,140,5,8,8
+    EDITTEXT        IDC_LOCATION_X,50,5,35,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_LOCATION_Z,150,5,35,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_LOCATION_Y,100,5,35,12,ES_AUTOHSCROLL
+    LTEXT           "Direction:",IDC_STATIC,5,30,30,10
+    LTEXT           "X:",IDC_STATIC,40,30,8,8
+    LTEXT           "Y:",IDC_STATIC,90,30,8,8
+    LTEXT           "Z:",IDC_STATIC,140,30,8,8
+    EDITTEXT        IDC_DIRECTION_X,50,30,35,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_DIRECTION_Z,150,30,35,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_DIRECTION_Y,100,30,35,12,ES_AUTOHSCROLL
+    LTEXT           "Up:",IDC_STATIC,5,55,30,10
+    LTEXT           "X:",IDC_STATIC,40,55,8,8
+    LTEXT           "Y:",IDC_STATIC,90,55,8,8
+    LTEXT           "Z:",IDC_STATIC,140,55,8,8
+    EDITTEXT        IDC_UP_X,50,55,35,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_UP_Z,150,55,35,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_UP_Y,100,55,35,12,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_DEMO                ICON    DISCARDABLE     "ICON1.ICO"
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,0
+ PRODUCTVERSION 1,0,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "Mindscape, Inc.\0"
+            VALUE "FileDescription", "Omni Demo\0"
+            VALUE "FileVersion", "1, 0, 0, 0\0"
+            VALUE "InternalName", "Omni Demo\0"
+            VALUE "LegalCopyright", "Copyright © 1995\0"
+            VALUE "OriginalFilename", "Omni Demo\0"
+            VALUE "ProductName", "Omni Demo\0"
+            VALUE "ProductVersion", "1, 0, 0, 0\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_TICKLE_INTERVALS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_REALISM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 230
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
+
+    IDD_REALTIMEVIEW_WEIGHTS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 229
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 106
+    END
+
+    IDD_ACTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 338
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 120
+    END
+
+    IDD_VIDEO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 184
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_NAVIGATION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 167
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 166
+    END
+
+    IDD_ACTION_PROPERTIES_GENERAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 70
+    END
+
+    IDD_ACTION_PROPERTIES_TIME, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 202
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 70
+    END
+
+    IDD_ACTION_PROPERTIES_LOCATION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 197
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 70
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_REALTIMEVIEW_WEIGHTS 
+                            "Show or hide the realtime view weights dialog\nToggle Weights Dialog"
+    ID_VIEW_REALISM         "Show or hide the realism dialog\nToggle Realism Dialog"
+    IDS_ACTION_PROPERTIES_GENERAL "General"
+    IDS_ACTION_PROPERTIES_TIME "Time"
+    IDS_ACTION_PROPERTIES_LOCATION "Location"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

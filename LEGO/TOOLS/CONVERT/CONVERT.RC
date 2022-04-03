@@ -1,0 +1,272 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CONVERT DIALOG DISCARDABLE  0, 0, 114, 78
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Convert"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Exit",IDC_EXIT,7,58,100,14
+    PUSHBUTTON      "Script...",IDC_SCRIPT,7,7,100,14
+    PUSHBUTTON      "3D Studio File...",IDC_STUDIOFILE,7,24,100,14
+    PUSHBUTTON      "Model Directory...",IDC_MODELDIRECTORY,7,41,100,14
+END
+
+IDD_MESH DIALOG DISCARDABLE  0, 0, 183, 106
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Meshes"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Save...",IDC_SAVE,126,7,50,14
+    PUSHBUTTON      "Close",IDC_CLOSE,126,24,50,14
+    LISTBOX         IDC_LIST,6,7,103,92,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_ANIMATION DIALOG DISCARDABLE  0, 0, 183, 106
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Animations"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Save...",IDC_SAVE,126,7,50,14
+    PUSHBUTTON      "Close",IDC_CLOSE,126,24,50,14
+    LISTBOX         IDC_LIST,6,7,103,92,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_MODEL DIALOG DISCARDABLE  0, 0, 183, 106
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Models"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Save...",IDC_SAVE,126,7,50,14
+    PUSHBUTTON      "Close",IDC_CLOSE,126,24,50,14
+    LISTBOX         IDC_LIST,6,7,103,92,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_TEXTURE DIALOG DISCARDABLE  0, 0, 183, 106
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Textures"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Save...",IDC_SAVE,126,7,50,14
+    PUSHBUTTON      "Close",IDC_CLOSE,126,24,50,14
+    LISTBOX         IDC_LIST,6,7,103,92,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_OPENMODELDIRECTORY DIALOG DISCARDABLE  0, 0, 225, 127
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Model Directories"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "OK",IDOK,168,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,168,24,50,14
+    CONTROL         "Tree1",IDC_TREE,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | 
+                    WS_BORDER | WS_TABSTOP,6,7,154,113
+END
+
+IDD_STUDIOFILE DIALOG DISCARDABLE  0, 0, 251, 97
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "3D Studio File"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_FILE,7,17,173,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Browse...",IDC_BROWSE,194,24,50,14
+    PUSHBUTTON      "Meshes...",IDC_MESHES,194,41,50,14
+    PUSHBUTTON      "Textures...",IDC_TEXTURES,194,58,50,14
+    PUSHBUTTON      "Animations...",IDC_ANIMATIONS,194,75,50,14
+    PUSHBUTTON      "Close",IDOK,194,7,50,14
+    LTEXT           "File:",IDC_STATIC,7,7,14,8
+END
+
+IDD_MODELDIRECTORY DIALOG DISCARDABLE  0, 0, 251, 62
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Model Directory"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_DIRECTORY,7,17,173,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Browse...",IDC_BROWSE,194,24,50,14
+    PUSHBUTTON      "Models...",IDC_MODELS,194,41,50,14
+    LTEXT           "Directory:",IDC_STATIC,7,7,31,8
+    PUSHBUTTON      "Close",IDOK,194,7,50,14
+END
+
+IDD_SCRIPT DIALOG DISCARDABLE  0, 0, 251, 62
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Script"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_FILE,7,17,173,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Browse...",IDC_BROWSE,194,24,50,14
+    PUSHBUTTON      "Run",IDC_RUN,194,41,50,14
+    LTEXT           "File:",IDC_STATIC,7,7,31,8
+    PUSHBUTTON      "Close",IDOK,194,7,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_CONVERT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 107
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 72
+    END
+
+    IDD_MESH, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 176
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 99
+    END
+
+    IDD_ANIMATION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 176
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 99
+    END
+
+    IDD_MODEL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 176
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 99
+    END
+
+    IDD_TEXTURE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 176
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 99
+    END
+
+    IDD_OPENMODELDIRECTORY, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 120
+    END
+
+    IDD_STUDIOFILE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 244
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 90
+    END
+
+    IDD_MODELDIRECTORY, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 244
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
+
+    IDD_SCRIPT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 244
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_COMPUTER            ICON    DISCARDABLE     "computer.ico"
+IDI_FIXEDDRIVE          ICON    DISCARDABLE     "fixeddrive.ico"
+IDI_CLOSEDFOLDER        ICON    DISCARDABLE     "closedfolder.ico"
+IDI_OPENFOLDER          ICON    DISCARDABLE     "openfolder.ico"
+IDI_REMOVABLEDRIVE      ICON    DISCARDABLE     "removabledrive.ico"
+IDI_REMOTEDRIVE         ICON    DISCARDABLE     "remotedrive.ico"
+IDI_CDROMDRIVE          ICON    DISCARDABLE     "cdromdrive.ico"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,3 @@
+
+The 3ds file contained here shows a bug in the D3DRM flat shading mode.
+

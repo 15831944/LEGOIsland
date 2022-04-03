@@ -1,0 +1,484 @@
+#include <afxdlgs.h>
+#include <afxcmn.h>
+#include <float.h>
+#include <math.h>
+#include "Convert.h"
+#include "Script.h"
+#include "StudioFile.h"
+#include "Model.h"
+#include "LegoMesh.h"
+#include "LegoFace.h"
+#include "LegoVertex.h"
+#include "LegoTextureVertex.h"
+#include "LegoTexture.h"
+#include "LegoImage.h"
+#include "LegoAnim.h"
+#include "LegoStorage.h"
+#include "LegoUtil.h"
+#include "Version.h"
+#include "gif.h"
+#include "squat.h"
+#include "resource.h"
+
+LegoConvert* g_convert = NULL;
+
+LegoConvert::LegoConvert()
+{
+    m_script = new LegoScript();
+    m_studioFile = new LegoStudioFile();
+    m_modelDirectory = new LegoModelDirectory();
+}
+
+LegoConvert::~LegoConvert()
+{
+    delete m_modelDirectory;
+    delete m_studioFile;
+    delete m_script;
+}
+
+LegoBool
+LegoConvert::OpenScript(const char* p_fileName)
+{
+    m_script->Close();
+    if (!m_script->Open(p_fileName)) {
+        Message("Unable to open script %s", p_fileName);
+        return FALSE;
+    }
+    return TRUE;
+}
+
+LegoBool 
+LegoConvert::OpenStudioFile(const char* p_fileName)
+{
+    m_studioFile->Close();
+    if (!m_studioFile->Open(p_fileName)) {
+        Message("Unable to open 3D Studio file %s", p_fileName);
+        return FALSE;
+    }
+    return TRUE;
+}
+
+LegoBool 
+LegoConvert::OpenModelDirectory(const char* p_fileName)
+{
+    m_modelDirectory->Close();
+    if (!m_modelDirectory->Open(p_fileName)) {
+        Message("Unable to open model directory %s", p_fileName);
+        return FALSE;
+    }
+    return TRUE;
+}
+
+LegoBool 
+LegoConvert::CreateModelFile(const char* p_fileName, CStringList& p_modelList)
+{
+    LegoBool ok = FALSE;
+    POSITION pos;
+    LegoU32 numModels = 0;
+    LegoU32 version;
+
+    LegoFile storage;
+    if (storage.Open(p_fileName, LegoFile::c_write) != SUCCESS) {
+        Message("Unable to open model file %s", p_fileName);
+        goto done;
+    }
+    version = MODEL_VERSION;
+    if (storage.Write(&version, sizeof(version)) != SUCCESS) {
+        Message("Unable to write to model file %s", p_fileName);
+        goto done;
+    }
+    for (pos = p_modelList.GetHeadPosition(); pos; p_modelList.GetNext(pos)) {
+        const char* modelName = p_modelList.GetAt(pos);
+        if (g_convert->GetModelDirectory()->GetModel(modelName)) {
+            numModels++;
+        }
+        else {
+            Message(
+                "Model %s is not in model directory %s; skipping...", 
+                modelName, 
+                (const char*) g_convert->GetModelDirectory()->GetName()
+            );
+        }
+    }
+    if (storage.Write(&numModels, sizeof(numModels)) != SUCCESS) {
+        Message("Unable to write to model file %s", p_fileName);
+        goto done;
+    }
+    for (pos = p_modelList.GetHeadPosition(); pos; p_modelList.GetNext(pos)) {
+        const char* modelName = p_modelList.GetAt(pos);
+        LegoModel* model = g_convert->GetModelDirectory()->GetModel(modelName);
+        if (model) {
+            g_convert->GetModelDirectory()->Write(&storage, model);
+        }
+    }
+
+    ok = TRUE;
+
+done:
+    return ok;
+}
+
+
+LegoMesh* 
+LegoConvert::CreateMesh(database3ds* p_database, mesh3ds* p_studioMesh, const char* p_textureDirectory)
+{
+    LegoU32 i;
+    LegoColor color = GetMeshColor(p_database, p_studioMesh);
+    LegoU8 shading = GetMeshShading(p_database, p_studioMesh);
+    kfmesh3ds* studioNode = NULL;
+    GetObjectMotionByName3ds(p_database, p_studioMesh->name, &studioNode);
+    if (!studioNode) {
+        Message("Unable to find keyframe data for mesh %s", p_studioMesh->name);
+        ReleaseObjectMotion3ds(&studioNode);
+        return NULL;
+    }
+    LegoU32 numVertices = p_studioMesh->nvertices;
+    LegoVertex* vertices = new LegoVertex[numVertices];
+    for (i = 0; i < numVertices; i++) {
+        vertices[i] = LegoVertex(
+            p_studioMesh->vertexarray[i].x 
+            - 
+            p_studioMesh->locmatrix[9]
+            -
+            studioNode->pivot.x
+            +
+            studioNode->pos[0].x,
+            p_studioMesh->vertexarray[i].z 
+            - 
+            p_studioMesh->locmatrix[11]
+            -
+            studioNode->pivot.z
+            +
+            studioNode->pos[0].z,
+            p_studioMesh->vertexarray[i].y 
+            - 
+            p_studioMesh->locmatrix[10]
+            -
+            studioNode->pivot.y
+            +
+            studioNode->pos[0].y
+        );        
+    }
+    ReleaseObjectMotion3ds(&studioNode);
+    LegoU32 numFaces = p_studioMesh->nfaces;
+    LegoFace* faces = new LegoFace[numFaces];
+    for (i = 0; i < numFaces; i++) {
+        LegoU32 vertexIndices[3];
+        vertexIndices[0] = p_studioMesh->facearray[i].v3;
+        vertexIndices[1] = p_studioMesh->facearray[i].v2;
+        vertexIndices[2] = p_studioMesh->facearray[i].v1;
+        faces[i] = LegoFace(vertexIndices);
+    }
+    LegoU32 numTextureVertices = p_studioMesh->ntextverts;
+    LegoTextureVertex* textureVertices = NULL;
+    if (numTextureVertices) {
+        textureVertices = new LegoTextureVertex[numTextureVertices];
+        for (i = 0; i < numTextureVertices; i++) {
+            textureVertices[i] = LegoTextureVertex(
+                p_studioMesh->textarray[i].u,
+                1 - p_studioMesh->textarray[i].v
+            );
+        }
+    }
+    LegoTexture* texture = NULL;
+    if (p_textureDirectory) {
+        CString textureFileName;
+        if (GetMeshTextureFileName(p_database, p_studioMesh, textureFileName)) {
+            textureFileName = CString(p_textureDirectory) + "\\" + textureFileName;
+            if (!(texture = CreateTexture(textureFileName))) {
+                Message("Unable to create texture %s; skipping...", (const char*) textureFileName);
+            }
+        }
+    }
+    LegoMesh* legoMesh = new LegoMesh();
+    legoMesh->SetColor(color);
+    legoMesh->SetShading(shading);
+    legoMesh->SetNumVertices(numVertices);
+    legoMesh->SetVertices(vertices);
+    legoMesh->SetNumFaces(numFaces);
+    legoMesh->SetFaces(faces);
+    legoMesh->SetNumTextureVertices(numTextureVertices);
+    legoMesh->SetTextureVertices(textureVertices);
+    legoMesh->SetTexture(texture);
+    return legoMesh;
+}
+
+LegoTexture* 
+LegoConvert::CreateTexture(const char* p_fileName)
+{
+    LegoBool ok = FALSE;
+    FILE* file = NULL;
+    LegoTexture* texture = NULL;
+    LegoU32 i;
+    LegoS16 screenWidth, screenHeight, colorRes, background, bitsPerPixel;
+    LegoU8 gifPalette[768];
+    GifRecordType type;
+    LegoU16 left, top, width, height;
+    LegoU8* bits;
+
+    if (!(file = DGifOpenFile((char*) p_fileName))) {
+        Message("Unable to open file %s", p_fileName);
+        goto done;
+    }
+    DGifGetScreenDesc(&screenWidth, &screenHeight, &colorRes, &background, &bitsPerPixel, gifPalette);
+    if (bitsPerPixel != 8) {
+        Message("File %s is not 8 bit", p_fileName);
+        goto done;
+    }
+    if (DGifGetRecordType(&type) != GIF_OK || type != IMAGE_DESC_RECORD_TYPE) {
+        Message("Invalid file %s", p_fileName);
+        goto done;
+    }
+    DGifGetImageDesc(&left, &top, &width, &height, gifPalette);
+    if (!IsPowerOf2(width)) {
+        Message("Texture file %s image width of %d is not a power of 2", p_fileName, width);
+    }
+    if (!IsPowerOf2(height)) {
+        Message("Texture file %s image height of %d is not a power of 2", p_fileName, height);
+    }
+    texture = new LegoTexture(width, height);
+    for (i = 0; i < 256; i++) {
+        texture->GetImage()->GetPaletteEntry(i).SetRed(gifPalette[3 * i] << (8 - colorRes));
+        texture->GetImage()->GetPaletteEntry(i).SetGreen(gifPalette[3 * i + 1] << (8 - colorRes));
+        texture->GetImage()->GetPaletteEntry(i).SetBlue(gifPalette[3 * i + 2] << (8 - colorRes));
+    }
+    bits = texture->GetImage()->GetBits();
+    while (height--) {
+        DGifGetLine(bits, width);
+        bits += width;
+    }
+
+    ok = TRUE;
+
+done:
+    if (!ok) {
+        delete texture;
+        texture = NULL;
+    }
+    if (file) {
+        DGifCloseFile();
+    }
+    return texture;
+}
+
+LegoAnimNodeData* 
+LegoConvert::CreateAnimNodeData(database3ds* p_database, kfmesh3ds* p_studioNode)
+{
+    LegoAnimNodeData* data = new LegoAnimNodeData();
+    LegoU32 i;
+
+    // name
+    data->SetName(p_studioNode->instance[0] ? p_studioNode->instance : p_studioNode->name);
+
+    // pivot
+    data->SetPivot(LegoVertex(p_studioNode->pivot.x, p_studioNode->pivot.z, p_studioNode->pivot.y));
+	
+    // translation
+    data->GetTranslationFlags().SetLoop(p_studioNode->npflag & TrackLoops3ds);
+    data->GetTranslationFlags().SetLockX(p_studioNode->npflag & TrackLockX3ds);
+    data->GetTranslationFlags().SetLockY(p_studioNode->npflag & TrackLockZ3ds);
+    data->GetTranslationFlags().SetLockZ(p_studioNode->npflag & TrackLockY3ds);
+    data->SetNumTranslationKeys(p_studioNode->npkeys);
+    if (data->GetNumTranslationKeys()) {
+        data->SetTranslationKeys(new LegoTranslationKey[data->GetNumTranslationKeys()]);
+        for (i = 0; i < data->GetNumTranslationKeys(); i++) {
+            data->GetTranslationKey(i).SetTime(p_studioNode->pkeys[i].time * 1000 / c_frameRate);
+            data->GetTranslationKey(i).GetSplineParameters().GetFlags().SetUseTension(p_studioNode->pkeys[i].rflags & KeyUsesTension3ds);
+            data->GetTranslationKey(i).GetSplineParameters().GetFlags().SetUseContinuity(p_studioNode->pkeys[i].rflags & KeyUsesCont3ds);
+            data->GetTranslationKey(i).GetSplineParameters().GetFlags().SetUseBias(p_studioNode->pkeys[i].rflags & KeyUsesBias3ds);
+            data->GetTranslationKey(i).GetSplineParameters().GetFlags().SetUseEaseTo(p_studioNode->pkeys[i].rflags & KeyUsesEaseTo3ds);
+            data->GetTranslationKey(i).GetSplineParameters().GetFlags().SetUseEaseFrom(p_studioNode->pkeys[i].rflags & KeyUsesEaseFrom3ds);
+            data->GetTranslationKey(i).GetSplineParameters().SetTension(p_studioNode->pkeys[i].tension);
+            data->GetTranslationKey(i).GetSplineParameters().SetContinuity(p_studioNode->pkeys[i].continuity);
+            data->GetTranslationKey(i).GetSplineParameters().SetBias(p_studioNode->pkeys[i].bias);
+            data->GetTranslationKey(i).GetSplineParameters().SetEaseTo(p_studioNode->pkeys[i].easeto);
+            data->GetTranslationKey(i).GetSplineParameters().SetEaseFrom(p_studioNode->pkeys[i].easefrom);
+            data->GetTranslationKey(i).SetX(p_studioNode->pos[i].x);
+            data->GetTranslationKey(i).SetY(p_studioNode->pos[i].z);
+            data->GetTranslationKey(i).SetZ(p_studioNode->pos[i].y);
+        }
+    }
+
+    // rotation
+    data->GetRotationFlags().SetLoop(p_studioNode->nrflag & TrackLoops3ds);
+    data->GetRotationFlags().SetLockX(p_studioNode->nrflag & TrackLockX3ds);
+    data->GetRotationFlags().SetLockY(p_studioNode->nrflag & TrackLockZ3ds);
+    data->GetRotationFlags().SetLockZ(p_studioNode->nrflag & TrackLockY3ds);
+    data->SetNumRotationKeys(p_studioNode->nrkeys);
+    if (data->GetNumRotationKeys()) {
+        data->SetRotationKeys(new LegoRotationKey[data->GetNumRotationKeys()]);
+        SQuat quat(1.0, 0.0, 0.0, 0.0);
+        for (i = 0; i < data->GetNumRotationKeys(); i++) {
+            data->GetRotationKey(i).SetTime(p_studioNode->rkeys[i].time * 1000 / c_frameRate);
+            data->GetRotationKey(i).GetSplineParameters().GetFlags().SetUseTension(p_studioNode->rkeys[i].rflags & KeyUsesTension3ds);
+            data->GetRotationKey(i).GetSplineParameters().GetFlags().SetUseContinuity(p_studioNode->rkeys[i].rflags & KeyUsesCont3ds);
+            data->GetRotationKey(i).GetSplineParameters().GetFlags().SetUseBias(p_studioNode->rkeys[i].rflags & KeyUsesBias3ds);
+            data->GetRotationKey(i).GetSplineParameters().GetFlags().SetUseEaseTo(p_studioNode->rkeys[i].rflags & KeyUsesEaseTo3ds);
+            data->GetRotationKey(i).GetSplineParameters().GetFlags().SetUseEaseFrom(p_studioNode->rkeys[i].rflags & KeyUsesEaseFrom3ds);
+            data->GetRotationKey(i).GetSplineParameters().SetTension(p_studioNode->rkeys[i].tension);
+            data->GetRotationKey(i).GetSplineParameters().SetContinuity(p_studioNode->rkeys[i].continuity);
+            data->GetRotationKey(i).GetSplineParameters().SetBias(p_studioNode->rkeys[i].bias);
+            data->GetRotationKey(i).GetSplineParameters().SetEaseTo(p_studioNode->rkeys[i].easeto);
+            data->GetRotationKey(i).GetSplineParameters().SetEaseFrom(p_studioNode->rkeys[i].easefrom);
+            quat *= SQuat(
+                p_studioNode->rot[i].x,
+                p_studioNode->rot[i].z,
+                p_studioNode->rot[i].y,
+                p_studioNode->rot[i].angle
+            );
+            LegoFloat angle = (LegoFloat) quat.GetRotation();
+            Vector3 vector = fabs(angle) > 4.0F * FLT_EPSILON ? quat.GetAxis() : Vector3(1.0, 0.0, 0.0);
+            data->GetRotationKey(i).SetAngle(angle);
+            data->GetRotationKey(i).SetX((LegoFloat) vector[0]);
+            data->GetRotationKey(i).SetY((LegoFloat) vector[1]);
+            data->GetRotationKey(i).SetZ((LegoFloat) vector[2]);
+        }
+    }
+
+    // scale
+    data->GetScaleFlags().SetLoop(p_studioNode->nsflag & TrackLoops3ds);
+    data->GetScaleFlags().SetLockX(p_studioNode->nsflag & TrackLockX3ds);
+    data->GetScaleFlags().SetLockY(p_studioNode->nsflag & TrackLockZ3ds);
+    data->GetScaleFlags().SetLockZ(p_studioNode->nsflag & TrackLockY3ds);
+    data->SetNumScaleKeys(p_studioNode->nskeys);
+    if (data->GetNumScaleKeys()) {
+        data->SetScaleKeys(new LegoScaleKey[data->GetNumScaleKeys()]);
+        for (i = 0; i < data->GetNumScaleKeys(); i++) {
+            data->GetScaleKey(i).SetTime(p_studioNode->skeys[i].time * 1000 / c_frameRate);
+            data->GetScaleKey(i).GetSplineParameters().GetFlags().SetUseTension(p_studioNode->skeys[i].rflags & KeyUsesTension3ds);
+            data->GetScaleKey(i).GetSplineParameters().GetFlags().SetUseContinuity(p_studioNode->skeys[i].rflags & KeyUsesCont3ds);
+            data->GetScaleKey(i).GetSplineParameters().GetFlags().SetUseBias(p_studioNode->skeys[i].rflags & KeyUsesBias3ds);
+            data->GetScaleKey(i).GetSplineParameters().GetFlags().SetUseEaseTo(p_studioNode->skeys[i].rflags & KeyUsesEaseTo3ds);
+            data->GetScaleKey(i).GetSplineParameters().GetFlags().SetUseEaseFrom(p_studioNode->skeys[i].rflags & KeyUsesEaseFrom3ds);
+            data->GetScaleKey(i).GetSplineParameters().SetTension(p_studioNode->skeys[i].tension);
+            data->GetScaleKey(i).GetSplineParameters().SetContinuity(p_studioNode->skeys[i].continuity);
+            data->GetScaleKey(i).GetSplineParameters().SetBias(p_studioNode->skeys[i].bias);
+            data->GetScaleKey(i).GetSplineParameters().SetEaseTo(p_studioNode->skeys[i].easeto);
+            data->GetScaleKey(i).GetSplineParameters().SetEaseFrom(p_studioNode->skeys[i].easefrom);
+            data->GetScaleKey(i).SetX(p_studioNode->scale[i].x);
+            data->GetScaleKey(i).SetY(p_studioNode->scale[i].z);
+            data->GetScaleKey(i).SetZ(p_studioNode->scale[i].y);
+        }
+    }
+
+    // morph
+    data->GetMorphFlags().SetLoop(p_studioNode->nmflag & TrackLoops3ds);
+    data->GetMorphFlags().SetLockX(p_studioNode->nmflag & TrackLockX3ds);
+    data->GetMorphFlags().SetLockY(p_studioNode->nmflag & TrackLockY3ds);
+    data->GetMorphFlags().SetLockZ(p_studioNode->nmflag & TrackLockZ3ds);
+    data->SetNumMorphKeys(p_studioNode->nmkeys);
+    if (data->GetNumMorphKeys()) {
+        data->SetMorphKeys(new LegoMorphKey[data->GetNumMorphKeys()]);
+        for (i = 0; i < data->GetNumMorphKeys(); i++) {
+            data->GetMorphKey(i).SetTime(p_studioNode->mkeys[i].time * 1000 / c_frameRate);
+            data->GetMorphKey(i).GetSplineParameters().GetFlags().SetUseTension(p_studioNode->mkeys[i].rflags & KeyUsesTension3ds);
+            data->GetMorphKey(i).GetSplineParameters().GetFlags().SetUseContinuity(p_studioNode->mkeys[i].rflags & KeyUsesCont3ds);
+            data->GetMorphKey(i).GetSplineParameters().GetFlags().SetUseBias(p_studioNode->mkeys[i].rflags & KeyUsesBias3ds);
+            data->GetMorphKey(i).GetSplineParameters().GetFlags().SetUseEaseTo(p_studioNode->mkeys[i].rflags & KeyUsesEaseTo3ds);
+            data->GetMorphKey(i).GetSplineParameters().GetFlags().SetUseEaseFrom(p_studioNode->mkeys[i].rflags & KeyUsesEaseFrom3ds);
+            data->GetMorphKey(i).GetSplineParameters().SetTension(p_studioNode->mkeys[i].tension);
+            data->GetMorphKey(i).GetSplineParameters().SetContinuity(p_studioNode->mkeys[i].continuity);
+            data->GetMorphKey(i).GetSplineParameters().SetBias(p_studioNode->mkeys[i].bias);
+            data->GetMorphKey(i).GetSplineParameters().SetEaseTo(p_studioNode->mkeys[i].easeto);
+            data->GetMorphKey(i).GetSplineParameters().SetEaseFrom(p_studioNode->mkeys[i].easefrom);
+            data->GetMorphKey(i).SetName(p_studioNode->morph[i].name);
+        }
+    }
+
+    return data;
+}
+
+LegoColor 
+LegoConvert::GetMeshColor(database3ds* p_database, mesh3ds* p_studioMesh)
+{
+    LegoColor color;
+    material3ds* material = NULL;
+
+    if (!p_studioMesh->nmats) {
+        return color;
+    }
+    if (!p_studioMesh->matarray) {
+        return color;
+    }
+    GetMaterialByName3ds(p_database, p_studioMesh->matarray[0].name, &material);
+    if (!material) {
+        return color;
+    }
+    color.SetRed((LegoU8) (material->diffuse.r * 255));
+    color.SetGreen((LegoU8) (material->diffuse.g * 255));
+    color.SetBlue((LegoU8) (material->diffuse.b * 255));
+    ReleaseMaterial3ds(&material);
+    return color;
+}
+
+LegoU8
+LegoConvert::GetMeshShading(database3ds* p_database, mesh3ds* p_studioMesh)
+{
+    LegoU8 shading = LegoMesh::e_gouraud;
+    material3ds* material = NULL;
+
+    if (!p_studioMesh->nmats) {
+        return shading;
+    }
+    if (!p_studioMesh->matarray) {
+        return shading;
+    }
+    GetMaterialByName3ds(p_database, p_studioMesh->matarray[0].name, &material);
+    if (!material) {
+        return shading;
+    }
+    switch (material->shading) {
+    case Flat:
+        shading = LegoMesh::e_flat;
+        break;
+	case Phong:
+    case Gouraud:
+        shading = LegoMesh::e_gouraud;
+        break;
+    default:
+        shading = LegoMesh::e_flat;
+        break;
+    }
+    return shading;
+}
+
+LegoBool
+LegoConvert::GetMeshTextureFileName(database3ds* p_database, mesh3ds* p_studioMesh, CString& p_name)
+{
+    LegoBool ok = FALSE;
+    material3ds* material = NULL;
+    LegoU32 i;
+
+    for (i = 0; i < p_studioMesh->nmats && !ok; i++) {
+        GetMaterialByName3ds(p_database, p_studioMesh->matarray[i].name, &material);
+        if (material) {
+            char* name = material->texture.map.name;
+            if (strlen(name) > 4 && stricmp(name + strlen(name) - 4, ".gif") == 0) {
+                p_name = name;
+                ok = TRUE;
+            }
+            ReleaseMaterial3ds(&material);
+            material = NULL;
+        }
+    }
+
+    return ok;
+}
+
+void 
+LegoConvert::Message(const char* p_format, ...)
+{
+    char message[256];
+    va_list list;
+    va_start(list, p_format);
+    vsprintf(message, p_format, list);
+    va_end(list);
+    MessageBox(NULL, message, "Convert", MB_OK);
+}
+
+LegoBool 
+LegoConvert::IsPowerOf2(LegoU32 p_val)
+{
+    return (((~p_val) + 1) & p_val) == p_val;
+}
+
